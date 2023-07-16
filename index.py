@@ -1,9 +1,8 @@
-import os
-user_dir = os.getenv("USER")
-
 import time
 import sys
-sys.path.insert(0, f"/home/{user_dir}/Gamepad")
+
+user_dir = sys.argv[1]
+sys.path.insert(0, f"{user_dir}/Gamepad")
 
 import Gamepad
 import nxbt
