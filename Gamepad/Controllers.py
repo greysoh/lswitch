@@ -224,8 +224,8 @@ class XboxSeries(Gamepad):
         self.axisNames = {
             0: 'LAS -X', #Left Analog Stick Left/Right (GOOD)
             1: 'LAS -Y', #Left Analog Stick Up/Down (GOOD)
-            4: 'RAS -X', #Right Analog Stick Left/Right (GOOD)
-            3: 'RAS -Y', #Right Analog Stick Up/Down (GOOD)
+            4: 'RAS -Y', #Right Analog Stick Left/Right (GOOD)
+            3: 'RAS -X', #Right Analog Stick Up/Down (GOOD)
             5: 'RT', #Right Trigger (GOOD)
             2: 'LT', #Left Trigger (GOOD)
             6: 'DPAD -X', #D-Pad Left/Right (GOOD)

@@ -1,3 +1,4 @@
+import math
 import time
 import sys
 
@@ -18,8 +19,7 @@ controller_index = nx.create_controller(nxbt.PRO_CONTROLLER)
 print("Waiting for connection(s)...")
 
 nx.wait_for_connection(controller_index)
-nx.press_buttons(controller_index, [nxbt.Buttons.B])
-
+ 
 print("NXBT Connected")
 print("Checking controller status...")
 
@@ -31,12 +31,13 @@ if not Gamepad.available(gamepad_id):
 print("Connected.")
 gamepad = gamepad_type(gamepad_id)
 
-print("Initializing 'better_button'... (thanks, et al.)")
+print("Initializing 'better_button'...")
 bb = better_button.BetterButton(True, controller_index, nx)
 
 val_conv_btn = [bb.key_up, bb.key_down]
 
 # NOT A FIXME: Pulling doesn't have any noticeable impact on performance on my machine.
+print("Initialized.")
 while gamepad.isConnected():
   eventType, control, value = gamepad.getNextEvent()
 
@@ -83,9 +84,7 @@ while gamepad.isConnected():
         val_conv_btn[value]([nxbt.Buttons.R])
               
   elif eventType == "AXIS":
-    # TODO: implement
-    print('YO BITCH ASS: ' + str(control))
-    
+    # TODO: implement    
     match control:
       case "DPAD -Y":
         if value == -1:
@@ -120,13 +119,17 @@ while gamepad.isConnected():
           bb.key_up([nxbt.Buttons.ZR])
     
       case "LAS -X":
-        print("TODO")
+        better_value = math.floor(value*100)
+        bb.tilt_stick(nxbt.Sticks.LEFT_STICK, better_value, None)
 
       case "LAS -Y":
-        print("TODO")
+        better_value = math.floor(value*100)
+        bb.tilt_stick(nxbt.Sticks.LEFT_STICK, None, -better_value)
       
       case "RAS -X":
-        print("TODO")
+        better_value = math.floor(value*100)
+        bb.tilt_stick(nxbt.Sticks.RIGHT_STICK, better_value, None)
       
       case "RAS -Y":
-        print("TODO")
+        better_value = math.floor(value*100)
+        bb.tilt_stick(nxbt.Sticks.RIGHT_STICK, None, -better_value)

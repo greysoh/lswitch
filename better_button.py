@@ -34,9 +34,12 @@ class BetterButton:
       self.base_packet[key] = False
 
   def tilt_stick(self, stick, side_vertical, side_horizonal):
-    self.base_packet[stick]["X_VALUE"] = side_vertical
-    self.base_packet[stick]["Y_VALUE"] = side_horizonal
-  
+    if side_vertical != None:
+      self.base_packet[stick]["X_VALUE"] = side_vertical
+    
+    if side_horizonal != None:
+      self.base_packet[stick]["Y_VALUE"] = side_horizonal
+     
   # Am I a real programmer now? (threads)
   def _send_keys(self):
     while True:
