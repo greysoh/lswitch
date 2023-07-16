@@ -22,16 +22,20 @@ class BetterButton:
   def key_down(self, key_list = []):
     for key in key_list:
       if key == "L_STICK_PRESS" or key == "R_STICK_PRESS":
-        self.base_packet[key[0]] = True
+        self.base_packet[f"{key[0]}_STICK"]["PRESSED"] = True
       
       self.base_packet[key] = True
   
   def key_up(self, key_list = []):
     for key in key_list:
       if key == "L_STICK_PRESS" or key == "R_STICK_PRESS":
-        self.base_packet[key[0]] = False
+        self.base_packet[f"{key[0]}_STICK"]["PRESSED"] = False
       
       self.base_packet[key] = False
+
+  def tilt_stick(self, stick, side_vertical, side_horizonal):
+    self.base_packet[stick]["X_VALUE"] = side_vertical
+    self.base_packet[stick]["Y_VALUE"] = side_horizonal
   
   # Am I a real programmer now? (threads)
   def _send_keys(self):
