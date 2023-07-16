@@ -38,94 +38,53 @@ gamepad = gamepadType(gamepad_id)
 print("Initializing 'better_button'... (thanks, et al.)")
 bb = better_button.BetterButton(True, controller_index, nx)
 
-# FIXME(?): We using pulling! So FUCK OFF.
-# FIXME: This is also kinda flawed. Afaik NXBT doesn't have "hold down til I say so" support.
+val_conv_btn = [bb.key_up, bb.key_down]
 
-
-
+# NOT A FIXME: Pulling doesn't have any noticeable impact on performance on my machine.
 while gamepad.isConnected():
   eventType, control, value = gamepad.getNextEvent()
 
   if eventType == "BUTTON":
-    print("BUTTON BITCH ASS: " + str(control))
     match control:
       case "A":
-        if value:
-          bb.key_down([nxbt.Buttons.A])
-        else:
-          bb.key_up([nxbt.Buttons.A])
+        val_conv_btn[value]([nxbt.Buttons.A])
       
       case "B":
-        if value:
-          bb.key_down([nxbt.Buttons.B])
-        else:
-          bb.key_up([nxbt.Buttons.B])
+        val_conv_btn[value]([nxbt.Buttons.B])
       
       case "X":
-        if value:
-          bb.key_down([nxbt.Buttons.X])
-        else:
-          bb.key_up([nxbt.Buttons.X])
+        val_conv_btn[value]([nxbt.Buttons.X])
       
       case "Y":
-        if value:
-          bb.key_down([nxbt.Buttons.Y])
-        else:
-          bb.key_up([nxbt.Buttons.Y])
+        val_conv_btn[value]([nxbt.Buttons.Y])
 
+      # FIXME: WHAT is this used for?
       case "LT":
-        if value:
-          bb.key_down([nxbt.Buttons.L])
-        else:
-          bb.key_up([nxbt.Buttons.L])
+        val_conv_btn[value]([nxbt.Buttons.L])
 
       case "RT":
-        if value:
-          bb.key_down([nxbt.Buttons.R])
-        else:
-          bb.key_up([nxbt.Buttons.R])
+        val_conv_btn[value]([nxbt.Buttons.R])
       
       case "HOME":
-        if value:
-          bb.key_down([nxbt.Buttons.HOME])
-        else:
-          bb.key_up([nxbt.Buttons.HOME])
-
+        val_conv_btn[value]([nxbt.Buttons.HOME])
+      
       case "SHARE":
-        if value:
-          bb.key_down([nxbt.Buttons.MINUS])
-        else:
-          bb.key_up([nxbt.Buttons.MINUS])
+        val_conv_btn[value]([nxbt.Buttons.MINUS])
       
       case "MENU":
-        if value:
-          bb.key_down([nxbt.Buttons.PLUS])
-        else:
-          bb.key_up([nxbt.Buttons.PLUS])
+        val_conv_btn[value]([nxbt.Buttons.PLUS])
 
       case "LASB":
-        if value:
-          bb.key_down([nxbt.Buttons.L_STICK_PRESS])
-        else:
-          bb.key_up([nxbt.Buttons.L_STICK_PRESS])
+        val_conv_btn[value]([nxbt.Buttons.L_STICK_PRESS])
 
       case "RASB":
-        if value:
-          bb.key_down([nxbt.Buttons.R_STICK_PRESS])
-        else:
-          bb.key_up([nxbt.Buttons.R_STICK_PRESS])
+        val_conv_btn[value]([nxbt.Buttons.R_STICK_PRESS])
 
       case "LB":
-        if value:
-          bb.key_down([nxbt.Buttons.L])
-        else:
-          bb.key_up([nxbt.Buttons.L])
+        val_conv_btn[value]([nxbt.Buttons.L])
 
       case "RB":
-        if value:
-          bb.key_down([nxbt.Buttons.R])
-        else:
-          bb.key_up([nxbt.Buttons.R])
+        val_conv_btn[value]([nxbt.Buttons.R])
               
   elif eventType == "AXIS":
     # TODO: implement
