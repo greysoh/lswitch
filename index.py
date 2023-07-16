@@ -7,6 +7,7 @@ sys.path.insert(0, f"{user_dir}/Gamepad")
 import Gamepad
 import nxbt
 
+import xb_like_conversion
 import better_button
 
 # Start the gamepad service
@@ -102,19 +103,29 @@ while gamepad.isConnected():
         else:
           bb.key_up([nxbt.Buttons.PLUS])
 
-      # FIXME: BROKEN.
-      case 98:
+      case "LASB":
         if value:
           bb.key_down([nxbt.Buttons.L_STICK_PRESS])
         else:
           bb.key_up([nxbt.Buttons.L_STICK_PRESS])
 
-      # FIXME: BROKEN.
-      case 99:
+      case "RASB":
         if value:
           bb.key_down([nxbt.Buttons.R_STICK_PRESS])
         else:
           bb.key_up([nxbt.Buttons.R_STICK_PRESS])
+
+      case "LB":
+        if value:
+          bb.key_down([nxbt.Buttons.L])
+        else:
+          bb.key_up([nxbt.Buttons.L])
+
+      case "RB":
+        if value:
+          bb.key_down([nxbt.Buttons.R])
+        else:
+          bb.key_up([nxbt.Buttons.R])
               
   elif eventType == "AXIS":
     # TODO: implement
@@ -138,13 +149,29 @@ while gamepad.isConnected():
           bb.key_up([nxbt.Buttons.DPAD_LEFT, nxbt.Buttons.DPAD_RIGHT])
 
       case "LT":
-        if value > 35:
+        better_value = xb_like_conversion.convert_xb_trigger(value)
+
+        if better_value > 35:
           bb.key_down([nxbt.Buttons.ZL])
-        elif value < 34:
+        elif better_value < 34:
           bb.key_up([nxbt.Buttons.ZL])
       
       case "RT":
-        if value > 35:
+        better_value = xb_like_conversion.convert_xb_trigger(value)
+
+        if better_value > 35:
           bb.key_down([nxbt.Buttons.ZR])
-        elif value < 34:
+        elif better_value < 34:
           bb.key_up([nxbt.Buttons.ZR])
+    
+      case "LAS -X":
+        print("TODO")
+
+      case "LAS -Y":
+        print("TODO")
+      
+      case "RAS -X":
+        print("TODO")
+      
+      case "RAS -Y":
+        print("TODO")
