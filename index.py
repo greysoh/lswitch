@@ -1,8 +1,7 @@
 import time
 import sys
 
-user_dir = sys.argv[1]
-sys.path.insert(0, f"{user_dir}/Gamepad")
+sys.path.insert(0, "./Gamepad")
 
 import Gamepad
 import nxbt
