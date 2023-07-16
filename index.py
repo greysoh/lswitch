@@ -6,12 +6,9 @@ sys.path.insert(0, "./Gamepad")
 import Gamepad
 import nxbt
 
+from config import gamepad_type, gamepad_id, use_nintendo_layout
 import xb_like_conversion
 import better_button
-
-# Start the gamepad service
-gamepadType = Gamepad.XboxSeries # close enough :3
-gamepad_id = 1
 
 # Start the NXBT service
 nx = nxbt.Nxbt()
@@ -32,7 +29,7 @@ if not Gamepad.available(gamepad_id):
     time.sleep(1.0)
 
 print("Connected.")
-gamepad = gamepadType(gamepad_id)
+gamepad = gamepad_type(gamepad_id)
 
 print("Initializing 'better_button'... (thanks, et al.)")
 bb = better_button.BetterButton(True, controller_index, nx)
