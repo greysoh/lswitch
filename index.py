@@ -55,13 +55,6 @@ while gamepad.isConnected():
       case "Y":
         val_conv_btn[value]([nxbt.Buttons.Y])
 
-      # FIXME: WHAT is this used for?
-      case "LT":
-        val_conv_btn[value]([nxbt.Buttons.L])
-
-      case "RT":
-        val_conv_btn[value]([nxbt.Buttons.R])
-      
       case "HOME":
         val_conv_btn[value]([nxbt.Buttons.HOME])
       

@@ -157,6 +157,7 @@ class PS4(Gamepad):
 #        }
 #        self._setupReverseMaps()
 
+PS5 = PS4
 
 class Xbox360(Gamepad):
     fullName = 'Xbox 360 controller'
