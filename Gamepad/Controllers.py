@@ -96,29 +96,29 @@ class PS4(Gamepad):
     def __init__(self, joystickNumber = 0):
         Gamepad.__init__(self, joystickNumber)
         self.axisNames = {
-            0: 'LEFT-X',
-            1: 'LEFT-Y',
-            2: 'L2',
-            3: 'RIGHT-X',
-            4: 'RIGHT-Y',
-            5: 'R2',
-            6: 'DPAD-X',
-            7: 'DPAD-Y'
+            0: 'LAS -X',
+            1: 'LAS -Y',
+            2: 'LT',
+            3: 'RAS -X',
+            4: 'RAS -Y',
+            5: 'RT',
+            6: 'DPAD -X',
+            7: 'DPAD -Y'
         }
         self.buttonNames = {
-            0:  'CROSS',
-            1:  'CIRCLE',
-            2:  'TRIANGLE',
-            3:  'SQUARE',
-            4:  'L1',
-            5:  'R1',
-            6:  'L2',
-            7:  'R2',
+            0:  'A',
+            1:  'B',
+            2:  'X',
+            3:  'Y',
+            4:  'LB',
+            5:  'RB',
+            6:  'LT',
+            7:  'RT',
             8:  'SHARE',
-            9:  'OPTIONS',
-            10: 'PS',
-            11: 'L3',
-            12: 'R3'
+            9:  'MENU',
+            10: 'HOME',
+            11: 'LASB',
+            12: 'RASB'
         }
         self._setupReverseMaps()
 
