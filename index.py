@@ -1,6 +1,9 @@
+import os
+user_dir = os.getenv("USER")
+
 import time
 import sys
-sys.path.insert(0, "/home/meow/Gamepad")
+sys.path.insert(0, f"/home/{user_dir}/Gamepad")
 
 import Gamepad
 import nxbt
@@ -9,6 +12,7 @@ import better_button
 
 # Start the gamepad service
 gamepadType = Gamepad.XboxSeries # close enough :3
+gamepad_id = 1
 
 # Start the NXBT service
 nx = nxbt.Nxbt()
@@ -23,19 +27,21 @@ nx.press_buttons(controller_index, [nxbt.Buttons.B])
 print("NXBT Connected")
 print("Checking controller status...")
 
-if not Gamepad.available(1):
+if not Gamepad.available(gamepad_id):
   print('Please connect your gamepad.')
   while not Gamepad.available():
     time.sleep(1.0)
 
 print("Connected.")
-gamepad = gamepadType(1)
+gamepad = gamepadType(gamepad_id)
 
 print("Initializing 'better_button'... (thanks, et al.)")
 bb = better_button.BetterButton(True, controller_index, nx)
 
 # FIXME(?): We using pulling! So FUCK OFF.
 # FIXME: This is also kinda flawed. Afaik NXBT doesn't have "hold down til I say so" support.
+
+
 
 while gamepad.isConnected():
   eventType, control, value = gamepad.getNextEvent()
