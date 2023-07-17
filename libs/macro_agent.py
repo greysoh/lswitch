@@ -1,3 +1,6 @@
+import threading
+import time
+
 import kdl
 
 class MacroAgent:
@@ -21,6 +24,21 @@ class MacroAgent:
 
     if len(macros_cache_search) != 0:
       return macros_cache_search[0]["macro_items"]
+    
+  def execute_macro(self, macro, bb):
+    threading.Thread(target=self._execute_macro, args=(macro,), kwargs={"bb":bb}).start()
+  
+  def _execute_macro(self, macro, bb):
+    for macro_button in macro:
+      match macro_button.type:
+        case "key_down":
+          bb.key_down([macro_button.key])
+        
+        case "sleep":
+          time.sleep(macro_button.time)
+        
+        case "key_up":
+          bb.key_up([macro_button.key])
   
   def _build_keybinding_cache(self):
     # FIXME: Maybe instead of clearing the keybinding cache each run, we check if we already have it?
@@ -46,73 +64,77 @@ class MacroAgent:
         self.keybinding_cache.append(gen_binding_info)
   
   def _build_macro_cache(self):
-    macros_lists = [x for x in self.doc.nodes if x.name == "macros"]
+    # FIXME: Maybe instead of clearing the keybinding cache each run, we check if we already have it?
+    self.macro_cache.clear()
 
-    for node in macros_lists:
-      mode_lists = [x for x in node.nodes if x.name == type]
+    for type in [self.KEYBOARD, self.CONTROLLER]:
+      macros_lists = [x for x in self.doc.nodes if x.name == "macros"]
 
-      for mode_items in mode_lists:
-        for macros in mode_items.nodes:
-          key = macros.name
+      for node in macros_lists:
+        mode_lists = [x for x in node.nodes if x.name == type]
 
-          time_scale = 1 
-          macro_items = []
+        for mode_items in mode_lists:
+          for macros in mode_items.nodes:
+            key = macros.name
+  
+            time_scale = 1 
+            macro_items = []
 
-          for macro_key in macros.nodes:
-            arguments_tuple = tuple(macro_key.props.items())
-            arguments = dict((x, y) for x, y in arguments_tuple)
+            for macro_key in macros.nodes:
+              arguments_tuple = tuple(macro_key.props.items())
+              arguments = dict((x, y) for x, y in arguments_tuple)
 
-            match macro_key.name:
-              case "press":
-                duration = arguments["duration"]
-                key_arg = arguments["key"]
+              match macro_key.name:
+                case "press":
+                  duration = arguments["duration"]
+                  key_arg = arguments["key"]
 
-                if len(arguments) > 2:
-                  time_scale = arguments["timeScale"]
-                  if time_scale == "ms":
-                    duration = duration / 1000
+                  if len(arguments) > 2:
+                    time_scale = arguments["timeScale"]
+                    if time_scale == "ms":
+                      duration = duration / 1000
                 
-                macro_items.append({
-                  "type": "key_down",
-                  "key": key_arg
-                })
+                  macro_items.append({
+                    "type": "key_down",
+                    "key": key_arg
+                  })
 
-                macro_items.append({
-                  "type": "sleep",
-                  "time": duration
-                })
+                  macro_items.append({
+                    "type": "sleep",
+                    "time": duration
+                  })
 
-                macro_items.append({
-                  "type": "key_up",
-                  "key": key_arg
-                })
-
-                break
+                  macro_items.append({
+                    "type": "key_up",
+                    "key": key_arg
+                  })
+  
+                  break
             
-              case "sleep":
-                macro_items.append({
-                  "type": "sleep",
-                  "time": arguments["duration"]
-                })
+                case "sleep":
+                  macro_items.append({
+                    "type": "sleep",
+                    "time": arguments["duration"]
+                  })
               
-              case "key_down":
-                macro_items.append({
-                  "type": "key_down",
-                  "key": arguments["key"]
-                })
+                case "key_down":
+                  macro_items.append({
+                    "type": "key_down",
+                    "key": arguments["key"]
+                  })
               
-              case "key_up":
-                macro_items.append({
-                  "type": "key_up",
-                  "key": arguments["key"]
-                })
+                case "key_up":
+                  macro_items.append({
+                    "type": "key_up",
+                    "key": arguments["key"]
+                  })
 
-          self.macro_cache.append({
-            "mode": type,
-            "key": key,
-            "macro_items": macro_items
-          })
-
+            self.macro_cache.append({
+              "mode": type,
+              "key": key,
+              "macro_items": macro_items
+            })
+    
   KEYBOARD = "keyboard"
   CONTROLLER = "controller"
 
