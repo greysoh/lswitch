@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, "./Gamepad")
+import libs.Gamepad as Gamepad
 
 import Gamepad
 
