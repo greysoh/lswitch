@@ -157,7 +157,7 @@ class PS4(Gamepad):
 #        }
 #        self._setupReverseMaps()
 
-PS5 = PS4
+PS5 = PS4 # It just works. Hey @Microsoft can you make it just work
 
 class Xbox360(Gamepad):
     fullName = 'Xbox 360 controller'

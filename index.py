@@ -2,14 +2,14 @@ import math
 import time
 import sys
 
-sys.path.insert(0, "./Gamepad")
+sys.path.insert(0, "./libs/Gamepad")
 
 import Gamepad
 import nxbt
 
 from config import gamepad_type, gamepad_id, use_nintendo_layout
-import xb_like_conversion
-import better_button
+import libs.xb_like_conversion as xb_like_conversion
+import libs.better_button as better_button
 
 # Start the NXBT service
 nx = nxbt.Nxbt()
