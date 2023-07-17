@@ -6,15 +6,28 @@ class MacroAgent:
     self.macro_cache = []
 
     self.doc = kdl.parse(str)
+
+    self._build_keybinding_cache()
+    self._build_macro_cache()
   
   def get_keybinding(self, key_to_search):
     desktop_binding_cache_search = [x for x in self.keybinding_cache if x["key"] == key_to_search]
-    desktop_bindings_lists = [x for x in self.doc.nodes if x.name == "desktop_bindings"]
    
     if len(desktop_binding_cache_search) != 0:
-      print("USING CACHE.")
       return desktop_binding_cache_search[0]["value"]
-   
+  
+  def get_macro(self, type, key):
+    macros_cache_search = [x for x in self.macro_cache if x["mode"] == type and x["key"] == key]
+
+    if len(macros_cache_search) != 0:
+      return macros_cache_search[0]["macro_items"]
+  
+  def _build_keybinding_cache(self):
+    # FIXME: Maybe instead of clearing the keybinding cache each run, we check if we already have it?
+    self.keybinding_cache.clear()
+
+    desktop_bindings_lists = [x for x in self.doc.nodes if x.name == "desktop_bindings"]
+
     for desktop_list in desktop_bindings_lists:
       for binding in desktop_list.nodes:
         gen_binding_info = {
@@ -30,12 +43,9 @@ class MacroAgent:
           elif key == "button":
             gen_binding_info["value"] = value
         
-        if key_to_search == gen_binding_info["key"] and gen_binding_info["value"] != None:
-          self.keybinding_cache.append(gen_binding_info)
-          return gen_binding_info["value"]
+        self.keybinding_cache.append(gen_binding_info)
   
-  def get_macro(self, type, key):
-    macros_cache_search = [x for x in self.macro_cache if x["mode"] == type and x["key"] == key]
+  def _build_macro_cache(self):
     macros_lists = [x for x in self.doc.nodes if x.name == "macros"]
 
     for node in macros_lists:
@@ -43,8 +53,7 @@ class MacroAgent:
 
       for mode_items in mode_lists:
         for macros in mode_items.nodes:
-          if macros.name != key:
-            continue
+          key = macros.name
 
           time_scale = 1 
           macro_items = []
@@ -56,7 +65,7 @@ class MacroAgent:
             match macro_key.name:
               case "press":
                 duration = arguments["duration"]
-                key = arguments["key"]
+                key_arg = arguments["key"]
 
                 if len(arguments) > 2:
                   time_scale = arguments["timeScale"]
@@ -65,7 +74,7 @@ class MacroAgent:
                 
                 macro_items.append({
                   "type": "key_down",
-                  "key": key
+                  "key": key_arg
                 })
 
                 macro_items.append({
@@ -75,7 +84,7 @@ class MacroAgent:
 
                 macro_items.append({
                   "type": "key_up",
-                  "key": key
+                  "key": key_arg
                 })
 
                 break
@@ -103,8 +112,6 @@ class MacroAgent:
             "key": key,
             "macro_items": macro_items
           })
-
-          return macro_items
 
   KEYBOARD = "keyboard"
   CONTROLLER = "controller"
