@@ -1,7 +1,9 @@
 import math
 import time
+import sys
+sys.path.insert(0, "./libs/Gamepad")
 
-import libs.Gamepad as Gamepad
+import Gamepad
 import nxbt
 
 from config import gamepad_type, gamepad_id, use_nintendo_layout
