@@ -7,8 +7,8 @@ import Gamepad
 import nxbt
 
 from config import gamepad_type, gamepad_id, use_nintendo_layout
-import libs.xb_like_conversion as xb_like_conversion
-import libs.better_button as better_button
+from libs.xb_like_conversion import convert_xb_trigger
+from libs.better_button import BetterButton
 
 # Start the NXBT service
 nx = nxbt.Nxbt()
@@ -31,7 +31,7 @@ print("Connected.")
 gamepad = gamepad_type(gamepad_id)
 
 print("Initializing 'better_button'...")
-bb = better_button.BetterButton(True, controller_index, nx)
+bb = BetterButton(True, controller_index, nx)
 
 val_conv_btn = [bb.key_up, bb.key_down]
 
@@ -95,7 +95,7 @@ while gamepad.isConnected():
           bb.key_up([nxbt.Buttons.DPAD_LEFT, nxbt.Buttons.DPAD_RIGHT])
 
       case "LT":
-        better_value = xb_like_conversion.convert_xb_trigger(value)
+        better_value = convert_xb_trigger(value)
 
         if better_value > 35:
           bb.key_down([nxbt.Buttons.ZL])
@@ -103,7 +103,7 @@ while gamepad.isConnected():
           bb.key_up([nxbt.Buttons.ZL])
       
       case "RT":
-        better_value = xb_like_conversion.convert_xb_trigger(value)
+        better_value = convert_xb_trigger(value)
 
         if better_value > 35:
           bb.key_down([nxbt.Buttons.ZR])
