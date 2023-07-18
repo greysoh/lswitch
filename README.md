@@ -2,7 +2,8 @@
 LSwitch is a 2 (counting 3 for debug apps) program suite of Switch tools:
 1. `controller.py` - Controller converts any controller into a Switch Pro controller
 2. `debug-ctrl.py` - Lets you view the incoming inputs of your controller
-3. `desktop.py` - Lets you play switch games like a PC (wip)
+3. `desktop.py` - Lets you play switch games like a PC (wip)  
+  
 LSwitch currently supports Linux only. 
 ## Installation
 You must be running Linux with Bluetooth set up using `BlueZ`.  
