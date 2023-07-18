@@ -1,7 +1,10 @@
 import time
 
 from config import gamepad_type, gamepad_id
-import libs.Gamepad as Gamepad
+import sys
+sys.path.insert(0, "./libs/Gamepad")
+
+import Gamepad
 
 print("Checking controller status...")
 

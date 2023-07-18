@@ -18,6 +18,9 @@ class MacroAgent:
    
     if len(desktop_binding_cache_search) != 0:
       return desktop_binding_cache_search[0]["value"]
+    
+  def get_keybind_list(self):
+    return self.keybinding_cache
   
   def get_macro(self, type, key):
     macros_cache_search = [x for x in self.macro_cache if x["mode"] == type and x["key"] == key]
@@ -29,16 +32,18 @@ class MacroAgent:
     threading.Thread(target=self._execute_macro, args=(macro,), kwargs={"bb":bb}).start()
   
   def _execute_macro(self, macro, bb):
+    print(macro, bb)
+
     for macro_button in macro:
-      match macro_button.type:
+      match macro_button["type"]:
         case "key_down":
-          bb.key_down([macro_button.key])
+          bb.key_down([macro_button["key"]])
         
         case "sleep":
-          time.sleep(macro_button.time)
+          time.sleep(macro_button["time"])
         
         case "key_up":
-          bb.key_up([macro_button.key])
+          bb.key_up([macro_button["key"]])
   
   def _build_keybinding_cache(self):
     # FIXME: Maybe instead of clearing the keybinding cache each run, we check if we already have it?
@@ -109,25 +114,31 @@ class MacroAgent:
                     "key": key_arg
                   })
   
-                  break
+                  continue
             
                 case "sleep":
                   macro_items.append({
                     "type": "sleep",
                     "time": arguments["duration"]
                   })
+
+                  continue
               
                 case "key_down":
                   macro_items.append({
                     "type": "key_down",
                     "key": arguments["key"]
                   })
+
+                  continue
               
                 case "key_up":
                   macro_items.append({
                     "type": "key_up",
                     "key": arguments["key"]
                   })
+
+                  continue
 
             self.macro_cache.append({
               "mode": type,

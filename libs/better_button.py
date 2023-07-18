@@ -24,6 +24,10 @@ class BetterButton:
   
   # Epic life hack: The keys are just strings. So, nxbt.Buttons will work 100%
   def key_down(self, key_list = []):
+    print(self.base_packet)
+    print(key_list)
+    print("I AM KEY DOWN!")
+
     for key in key_list:
       if key == "L_STICK_PRESS" or key == "R_STICK_PRESS":
         self.base_packet[f"{key[0]}_STICK"]["PRESSED"] = True
@@ -35,15 +39,19 @@ class BetterButton:
       self.base_packet[key] = True
   
   def key_up(self, key_list = []):
+    print(self.base_packet)
+    print(key_list)
+    print("I AM KEY UP!")
+  
     for key in key_list:
       if key == "L_STICK_PRESS" or key == "R_STICK_PRESS":
         self.base_packet[f"{key[0]}_STICK"]["PRESSED"] = False
       elif key in key_bign_raw and use_nintendo_layout:
-        self.base_packet[key_bign_layout[key_bign_raw.index(key)]] = True
+        self.base_packet[key_bign_layout[key_bign_raw.index(key)]] = False
         break
       
       self.base_packet[key] = False
-
+    
   def tilt_stick(self, stick, side_vertical, side_horizonal):
     if side_vertical != None:
       self.base_packet[stick]["X_VALUE"] = side_vertical

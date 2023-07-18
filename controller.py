@@ -6,8 +6,9 @@ sys.path.insert(0, "./libs/Gamepad")
 import Gamepad
 import nxbt
 
-from config import gamepad_type, gamepad_id, use_nintendo_layout
+from config import gamepad_type, gamepad_id, macro_kdl_path
 from libs.xb_like_conversion import convert_xb_trigger
+from libs.macro_agent import MacroAgentFromFile
 from libs.better_button import BetterButton
 
 # Start the NXBT service
@@ -30,10 +31,12 @@ if not Gamepad.available(gamepad_id):
 print("Connected.")
 gamepad = gamepad_type(gamepad_id)
 
-print("Initializing 'better_button'...")
-bb = BetterButton(True, controller_index, nx)
+print("Initializing components...")
 
+bb = BetterButton(True, controller_index, nx)
 val_conv_btn = [bb.key_up, bb.key_down]
+
+ma = MacroAgentFromFile(macro_kdl_path)
 
 # NOT A FIXME: Pulling doesn't have any noticeable impact on performance on my machine.
 print("Initialized.")
@@ -41,6 +44,12 @@ while gamepad.isConnected():
   eventType, control, value = gamepad.getNextEvent()
 
   if eventType == "BUTTON":
+    macro = ma.get_macro(ma.CONTROLLER, control)
+
+    if macro and value:
+      ma.execute_macro(macro, bb)
+      continue
+    
     match control:
       case "A":
         val_conv_btn[value]([nxbt.Buttons.A])
