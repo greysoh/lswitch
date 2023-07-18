@@ -24,10 +24,6 @@ class BetterButton:
   
   # Epic life hack: The keys are just strings. So, nxbt.Buttons will work 100%
   def key_down(self, key_list = []):
-    print(self.base_packet)
-    print(key_list)
-    print("I AM KEY DOWN!")
-
     for key in key_list:
       if key == "L_STICK_PRESS" or key == "R_STICK_PRESS":
         self.base_packet[f"{key[0]}_STICK"]["PRESSED"] = True
@@ -39,10 +35,6 @@ class BetterButton:
       self.base_packet[key] = True
   
   def key_up(self, key_list = []):
-    print(self.base_packet)
-    print(key_list)
-    print("I AM KEY UP!")
-  
     for key in key_list:
       if key == "L_STICK_PRESS" or key == "R_STICK_PRESS":
         self.base_packet[f"{key[0]}_STICK"]["PRESSED"] = False
