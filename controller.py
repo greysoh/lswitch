@@ -38,39 +38,26 @@ val_conv_btn = [bb.key_up, bb.key_down]
 
 ma = MacroAgentFromFile(macro_kdl_path)
 
-# FIXME: CLEAN UP THIS SHIT
-def A_button(value):
-  val_conv_btn[value]([nxbt.Buttons.A])
+# magic time.
+gamepad.startBackgroundUpdates()
 
-def B_button(value):
-  val_conv_btn[value]([nxbt.Buttons.B])
+for easy_key in ["A", "B", "X", "Y", "HOME"]:
+  func = lambda value, easy_key=easy_key: val_conv_btn[value]([easy_key])
+  gamepad.addButtonChangedHandler(easy_key, func)
 
-def X_button(value):
-  val_conv_btn[value]([nxbt.Buttons.X])
+for joy_key in ["LASB", "RASB"]:
+  func = lambda value, joy_key=joy_key: val_conv_btn[value]([f"{joy_key[0]}_STICK_PRESS"])
+  gamepad.addButtonChangedHandler(joy_key, func)
 
-def Y_button(value):
-  val_conv_btn[value]([nxbt.Buttons.Y])
-
-def HOME_button(value):
-  val_conv_btn[value]([nxbt.Buttons.HOME])
+for top_key in ["LB", "RB"]:
+  func = lambda value, top_key=top_key: val_conv_btn[value]([top_key[0]])
+  gamepad.addButtonChangedHandler(top_key, func)
 
 def SHARE_button(value):
   val_conv_btn[value]([nxbt.Buttons.MINUS])
 
 def MENU_button(value):
   val_conv_btn[value]([nxbt.Buttons.PLUS])
-
-def LASB_button(value):
-  val_conv_btn[value]([nxbt.Buttons.L_STICK_PRESS])
-
-def RASB_button(value):
-  val_conv_btn[value]([nxbt.Buttons.R_STICK_PRESS])
-
-def LB_button(value):
-  val_conv_btn[value]([nxbt.Buttons.L])
-
-def RB_button(value):
-  val_conv_btn[value]([nxbt.Buttons.R])
 
 def DPADY_trigger(value):
   if value == -1:
@@ -124,20 +111,8 @@ def RASY_trigger(value):
   
   bb.tilt_stick(nxbt.Sticks.RIGHT_STICK, None, -better_value)
 
-# magic time.
-gamepad.startBackgroundUpdates()
-
-gamepad.addButtonChangedHandler("A", A_button)
-gamepad.addButtonChangedHandler("B", B_button)
-gamepad.addButtonChangedHandler("X", X_button)
-gamepad.addButtonChangedHandler("Y", Y_button)
-gamepad.addButtonChangedHandler("HOME", HOME_button)
 gamepad.addButtonChangedHandler("SHARE", SHARE_button)
 gamepad.addButtonChangedHandler("MENU", MENU_button)
-gamepad.addButtonChangedHandler("LASB", LASB_button)
-gamepad.addButtonChangedHandler("RASB", RASB_button)
-gamepad.addButtonChangedHandler("LB", LB_button)
-gamepad.addButtonChangedHandler("RB", RB_button)
 
 gamepad.addAxisMovedHandler("DPAD -Y", DPADY_trigger)
 gamepad.addAxisMovedHandler("DPAD -X", DPADX_trigger)
