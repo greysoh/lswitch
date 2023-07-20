@@ -39,7 +39,7 @@ We officially support these following controllers:
 * PS5 (`Gamepad.PS5`)
 * Series S/X (`Gamepad.XboxSeries`)
 
-Gamepad has support for these additional controllers:
+Gamepad has support for these additional controllers (but WE don't as they are untested/not converted):
 * PS3 (`Gamepad.PS3`)
 * Xbox 360 (`Gamepad.Xbox360`)
 * Xbox One (`Gamepad.XboxONE`)
