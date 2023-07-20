@@ -32,8 +32,6 @@ class MacroAgent:
     threading.Thread(target=self._execute_macro, args=(macro,), kwargs={"bb":bb}).start()
   
   def _execute_macro(self, macro, bb):
-    print(macro, bb)
-
     for macro_button in macro:
       match macro_button["type"]:
         case "key_down":

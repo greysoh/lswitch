@@ -34,11 +34,18 @@ gamepad = gamepad_type(gamepad_id)
 print("Initializing components...")
 
 bb = BetterButton(True, controller_index, nx)
-val_conv_btn = [bb.key_up, bb.key_down]
-
 ma = MacroAgentFromFile(macro_kdl_path)
 
-# magic time.
+def key_down_proxy(arr):
+  macro = ma.get_macro(ma.CONTROLLER, arr[0])
+
+  if macro:
+    ma.execute_macro(macro, bb)
+    return True
+  
+  bb.key_down(arr)
+
+val_conv_btn = [bb.key_up, key_down_proxy]
 gamepad.startBackgroundUpdates()
 
 for easy_key in ["A", "B", "X", "Y", "HOME"]:
@@ -101,14 +108,10 @@ def LASY_trigger(value):
 
 def RASX_trigger(value):
   better_value = math.floor(value*100)
-  print("rasx: " + str(better_value))
-  
   bb.tilt_stick(nxbt.Sticks.RIGHT_STICK, better_value, None)
 
 def RASY_trigger(value):
   better_value = math.floor(value*100)
-  print("rasy: " + str(better_value))
-  
   bb.tilt_stick(nxbt.Sticks.RIGHT_STICK, None, -better_value)
 
 gamepad.addButtonChangedHandler("SHARE", SHARE_button)
@@ -122,9 +125,5 @@ gamepad.addAxisMovedHandler("LAS -X", LASX_trigger)
 gamepad.addAxisMovedHandler("LAS -Y", LASY_trigger)
 gamepad.addAxisMovedHandler("RAS -X", RASX_trigger)
 gamepad.addAxisMovedHandler("RAS -Y", RASY_trigger)
-
-#    if macro and value:
-#      ma.execute_macro(macro, bb)
-#      continue
 
 print("Initialized.")
