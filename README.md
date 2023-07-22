@@ -59,41 +59,13 @@ KDL is a Cuddly Document Language. This was chosen for simplicity. `macro_kdl_pa
 ### `macors.keyboard`
 TODO. not complete (code wise)
 ### `macros.controller`
-The first entry (ex. `A {}`) maps to the button on YOUR controller, and not the nintendo keys.  
+The first entry (ex. `A {}`) maps to the Nintendo keys (the keys on the Pro/JoyCon controller).
 There are currently 4 commands:
-* `press`: Toggles a key for a given time. key=`Nintendo key, ex. ZL, ZR` duration=`Time to sleep. Defaults to being in seconds.` timeScale=`Changes the scale of duration. Options are: "ms" to change it to milliseconds [OPTIONAL]`
+* `press`: Toggles a key for a given time. key=`Nintendo ey, ex. ZL, ZR` duration=`Time to sleep. Defaults to being in seconds.` timeScale=`Changes the scale of duration. Options are: "ms" to change it to milliseconds [OPTIONAL]`
 * `key_down`: Presses a key down. key=`Nintendo key, ex. ZL, ZR`
 * `sleep`: Sleeps for a given time in milliseconds. duration=`Duration in seconds`
 * `key_down`: Releases a key. key=`Nintendo key, ex. ZL, ZR`  
   
-Here are a full list of controller keys (based on Series S/X code in `Gampead`):
-```py
-self.axisNames = {
-    0: 'LAS -X', #Left Analog Stick Left/Right (GOOD)
-    1: 'LAS -Y', #Left Analog Stick Up/Down (GOOD)
-    4: 'RAS -Y', #Right Analog Stick Left/Right (GOOD)
-    3: 'RAS -X', #Right Analog Stick Up/Down (GOOD)
-    5: 'RT', #Right Trigger (GOOD)
-    2: 'LT', #Left Trigger (GOOD)
-    6: 'DPAD -X', #D-Pad Left/Right (GOOD)
-    7: 'DPAD -Y' #D-Pad Up/Down (GOOD)
-}
-self.buttonNames = {
-    0:  'A', #A Button (GOOD)
-    1:  'B', #B Button (GOOD)
-    2:  'X', #X Button (GOOD)
-    3:  'Y', #Y Button (GOOD)
-    4:  'LB', #Left Bumper (GOOD)
-    5:  'RB', #Right Bumper (GOOD)
-    11: 'START', #Hamburger Button (GOOD)
-    8: 'HOME', #XBOX Button (GOOD)
-    9: 'LASB', #Left Analog Stick button (GOOD)
-    10: 'RASB', #Right Analog Stick button (GOOD)
-
-    6: 'SHARE',
-    7: 'MENU'
-}
-```
 Here are a full list of Nintendo keys (based on NXBT code):
 ```py
 DIRECT_INPUT_PACKET = {
