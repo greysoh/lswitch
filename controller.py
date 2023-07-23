@@ -8,8 +8,8 @@ import nxbt
 
 from config import gamepad_type, gamepad_id, macro_kdl_path
 from libs.xb_like_conversion import convert_xb_trigger
-from libs.macro_agent import MacroAgentFromFile
 from libs.better_button import BetterButton
+from libs.macro_agent import MacroAgent
 
 # Start the NXBT service
 nx = nxbt.Nxbt()
@@ -34,7 +34,7 @@ gamepad = gamepad_type(gamepad_id)
 print("Initializing components...")
 
 bb = BetterButton(True, controller_index, nx)
-ma = MacroAgentFromFile(macro_kdl_path)
+ma = MacroAgent(macro_kdl_path, True)
 
 def key_down_proxy(arr):
   macro = ma.get_macro(ma.CONTROLLER, arr[0])

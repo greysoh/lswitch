@@ -1,14 +1,25 @@
 import threading
 import time
+import os
 
 import kdl
 
 class MacroAgent:
-  def __init__(self, str):
+  def __init__(self, str_data, is_file):
     self.keybinding_cache = []
     self.macro_cache = []
 
-    self.doc = kdl.parse(str)
+    self.str_base = str_data # fixme: betterer?
+
+    if is_file:
+      with open(str_data) as f:
+        self.file_path = str_data
+        self.str_base = f.read()    
+      
+      self.file_timestamp_current = os.path.getmtime(str_data)
+      threading.Thread(target=self._file_background_update_daemon).start()
+
+    self.doc = kdl.parse(self.str_base)
 
     self._build_keybinding_cache()
     self._build_macro_cache()
@@ -42,6 +53,26 @@ class MacroAgent:
         
         case "key_up":
           bb.key_up([macro_button["key"]])
+    
+  def _file_background_update_daemon(self):
+    while True:
+      time.sleep(0.5)
+
+      modified_time = os.path.getmtime(self.file_path)
+      if modified_time != self.file_timestamp_current:
+        try:
+          self.file_timestamp_current = modified_time
+          print("File modified, beginning macro rebuild process...")
+
+          # FIXME: There is no locks, so, if you time inputs right some macros will drop.
+          self.doc = kdl.parse(self.file_path)
+
+          self._build_keybinding_cache()
+          self._build_macro_cache()
+
+          print("Finished successfully.")
+        except Exception as e:
+          print(e)
   
   def _build_keybinding_cache(self):
     # FIXME: Maybe instead of clearing the keybinding cache each run, we check if we already have it?
@@ -146,8 +177,3 @@ class MacroAgent:
     
   KEYBOARD = "keyboard"
   CONTROLLER = "controller"
-
-class MacroAgentFromFile(MacroAgent):
-  def __init__(self, file_path):
-    with open(file_path) as f:
-      super().__init__(f.read())
